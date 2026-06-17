@@ -16,7 +16,7 @@
             <br>
             <thead class="thead-light">
               <br><br><br><br><br><br>
-              <a href="{{ route('dashboard.mostrarDashboard') }}" class="btn btn-primary">Regresar</a>
+              <a href="{{ route('entregaLineas.mostrarEntregaLineas') }}" class="btn btn-primary">Regresar</a>
               <br>
         
         
@@ -41,7 +41,7 @@
                     >
                   </div>
                   <div class="col-2">
-                    <button type="button" class="btn btn-success" onclick="buscarPersona()"><i class="fas fa-search"></i> Buscar</button>
+                    <a type="button" class="btn btn-success" onclick="buscarPersona()"><i class="fas fa-search"></i> Buscar</a>
                   </div>
                 </div>
                 <br><br>
@@ -51,6 +51,7 @@
         
                   <br><br>
       <h2>Datos del gerente</h2>
+      <a href="{{ route('entregaLineas.mostrarEntregaLineas') }}" class="btn btn-primary">Regresar</a>
     
             <tr>
               <th scope="col" style="color: black">Cedula</th>
@@ -84,6 +85,7 @@
     
 <br>
       <h2>Asignado a</h2>
+      <button type="button" class="btn btn-primary" onclick="addDynamicField()">Asignar Linea</button>
       <div id="dynamic-fields">
         <!-- Template field for cloning -->
         <div id="template-field" style="display: none">
@@ -92,7 +94,7 @@
             <table class="table align-items-center table-flush  ">
               <thead class="thead-light">
           
-          <br>
+          <br>  
           <tr>
             <th scope="col" style="color:black">Datos Persona</th>
           </tr>        
@@ -149,8 +151,6 @@
     </div>
     <br>
     <button type="button" class="btn btn-primary" onclick="validarInput()">Guardar</button>
-    <button type="button" class="btn btn-primary" onclick="addDynamicField()">Asignar Linea</button>
-
   </form>
   </div>
 </div>

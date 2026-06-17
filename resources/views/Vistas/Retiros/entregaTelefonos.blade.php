@@ -11,24 +11,9 @@
         <br>
         <br>
         <br>
-        <br>
-
+        <br>  
       <thead class="thead-light">
         <a href="{{ route('registroEntregaTelefono.registrarEntregaTelefono') }}" class="btn btn-primary">Registrar Entrega Telefonos</a>
-        <form action="{{ route('filtrarEntregaTelefonos.filtrar') }}" method="GET" id="form">
-          @if(Session::has('errorMessage'))
-          <div id="flash-message" class="alert alert-danger">
-              {{ Session::get('errorMessage') }}
-          </div>
-          @endif
-          <label for="min_age">Filtro:</label>
-          <input type="text" name="filtro" id="filtro">
-          <label for="min_age">Fecha:</label>
-          <input type="date" name="desde" id="desde">
-          <input type="date" name="hasta" id="hasta">
-      
-          <button type="submit" class="btn btn_primary">Generar Excel</button>
-        </form>
 
         <tr>
           <th scope="col">Cedula</th>
@@ -91,20 +76,3 @@
   </div>
 
 @endsection
-
-<script>
-
-  // Wait for the document to be fully loaded
-  document.addEventListener('DOMContentLoaded', function() {
-      // Get the flash message element
-      var flashMessage = document.getElementById('flash-message');
-      
-      // If the element exists
-      if (flashMessage) {
-          // Set a timeout function to hide the element after 2 seconds
-          setTimeout(function() {
-              flashMessage.style.display = 'none';
-          }, 1000); // 2000 milliseconds = 2 seconds
-      }
-  });
-</script>

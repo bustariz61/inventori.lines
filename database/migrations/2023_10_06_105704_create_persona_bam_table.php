@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('segundo_departamento', 100);
             $table->string('sim', 100);
             $table->string('marca', 100);
-            $table->string('modelo', 100);
             $table->string('imeil', 100);
             $table->string('serial', 100);
             $table->string('nroBien', 100);

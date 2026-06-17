@@ -34,8 +34,16 @@
             <td><b><input name="cc" id="cc" class="form-control original" type="text" style="width: 150px; color:black;"></b></td>
             <td><b><input name="asunto" id="asunto" class="form-control original" type="text" style="width: 500px; color:black;"></b></td>
         </tr>
-          <input type="file" id="fileInput" name="xd">
-          <textarea id="textInput"></textarea>
+          <tr>
+            <td colspan="4">
+                <br>
+                <br>
+                <br>
+                <br>
+                <textarea id="texto" class="original" name="texto" rows="4" cols="50" style="height:200px; width: 1050px;">
+                </textarea>
+            </td>
+        </tr>
 
         
 
@@ -77,24 +85,6 @@
 
 
 @endsection
-
-<script>
-const fileInput = document.getElementById('fileInput');
-const textInput = document.getElementById('textInput');
-
-fileInput.addEventListener('change', (event) => {
-  const selectedFile = event.target.files[0];
-  const fileReader = new FileReader();
-
-  fileReader.onload = (e) => {
-    const fileContent = e.target.result;
-    textInput.value = fileContent;
-  };
-
-  fileReader.readAsText(selectedFile);
-});
-</script>
-
 
 <script>
 

@@ -44,21 +44,19 @@
         <tr>
           <th scope="col" style="color: black">Sim</th>
           <th scope="col" style="color: black">Marca</th>
-          <th scope="col" style="color: black">Modelo</th>
           <th scope="col" style="color: black">Imeil</th>
           <th scope="col" style="color: black">Serial</th>
           <th scope="col" style="color: black">Número de Bien</th>
           <th scope="col" style="color: black">Antena</th>
           <th scope="col" style="color: black">Fecha</th>
         </tr>
-        <td><b><input name="sim" id="sim" value="{{ $entrega->sim }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="marca" id="marca" value="{{ $entrega->marca }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="modelo" id="modelo" value="{{ $entrega->modelo }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="imeil" id="imeil" value="{{ $entrega->imeil }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="serial" id="serial" value="{{ $entrega->serial }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="nroBien" id="nroBien" value="{{ $entrega->nroBien }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="antena" id="antena" value="{{ $entrega->antena }}" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-        <td><b><input name="fecha" id="fecha" value="{{ $entrega->fecha }}" class="form-control validate-field" type="date" style="width: 140px; height: 40px; color:black"></b></td>
+        <td><b><input name="sim[]" id="sim" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
+        <td><b><input name="marca" id="marca" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
+        <td><b><input name="imeil" id="imeil" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
+        <td><b><input name="serial" id="serial" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
+        <td><b><input name="nroBien" id="nroBien" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
+        <td><b><input name="antena" id="antena" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
+        <td><b><input name="fecha" id="fecha" class="form-control validate-field" type="date" style="width: 140px; height: 40px; color:black"></b></td>
         <tr>
 
         </tr>
@@ -163,15 +161,6 @@
       }
 
       if (fieldId === 'marca'){ // Replace 'field1' with the ID of the first field
-        if ($(input).val().trim() === ''){
-          $(input).addClass('campo_con_errores');
-          errores++;
-        } else {
-          $(input).removeClass('campo_con_errores');
-        }
-      }
-
-      if (fieldId === 'modelo'){ // Replace 'field1' with the ID of the first field
         if ($(input).val().trim() === ''){
           $(input).addClass('campo_con_errores');
           errores++;

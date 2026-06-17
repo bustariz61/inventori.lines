@@ -45,38 +45,6 @@ function cargartelefonos(arg){
         
         
         }
-
-        function cargarPuntoVenta(arg){
-            //funcion que carga todos los formularios del sistema
-            
-                    if(arg==1){ var url = "entregaPuntosVentas"; } //nombre de function the controller
-            
-            
-                    $("#contenido_principal").html($("#cargador_empresa").html());
-                       
-                        $.get(url,function(resul){
-                            $("#contenido_principal").html(resul);
-            
-                        })
-            
-            
-            }
-
-            function cargarComunicacionInterna(arg){
-                //funcion que carga todos los formularios del sistema
-                
-                        if(arg==1){ var url = "comunicacionInterna"; } //nombre de function the controller
-                
-                
-                        $("#contenido_principal").html($("#cargador_empresa").html());
-                           
-                            $.get(url,function(resul){
-                                $("#contenido_principal").html(resul);
-                
-                            })
-                
-                
-                }
     
 
 

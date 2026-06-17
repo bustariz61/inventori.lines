@@ -18,40 +18,7 @@
       
       <br>
       <h2>Datos del gerente</h2>
-      <a href="{{ route('dashboard.mostrarDashboard') }}" class="btn btn-primary">Regresar</a>
-      <br>
-        
-        
-        
-                <div class="row">
-                  <div class="col-3">
-                    <input  class="form-control original"
-                            type="text" id="buscadorCedula"
-                            placeholder="Cédula">
-                  </div>
-        
-                  <div class="col-3">
-                    <input  class="form-control original"
-                            type="text" id="buscadorNombre"
-                            placeholder="Nombre">
-                  </div>
-        
-                  <div class="col-3">
-                    <input  class="form-control original"
-                            type="text" id="buscadorApellido"
-                            placeholder="Apellido"
-                    >
-                  </div>
-                  <div class="col-2">
-                    <button type="button" class="btn btn-success" onclick="buscarPersona()"><i class="fas fa-search"></i> Buscar</button>
-                  </div>
-                </div>
-                <br><br>
-                <div id="mostrarPersonas"></div>
-        
-        
-        
-                  <br><br>
+      <a href="{{ route('entregaBams.mostrar') }}" class="btn btn-primary">Regresar</a>
     
         <tr>
           <th scope="colr" style="color: black">Datos Persona</th>
@@ -129,7 +96,6 @@
                 <tr>
                   <th scope="col" style="color: black">Sim</th>
                   <th scope="col" style="color: black">Marca</th>
-                  <th scope="col" style="color: black">Modelo</th>
                   <th scope="col" style="color: black">Imeil</th>
                   <th scope="col" style="color: black">Serial</th>
                   <th scope="col" style="color: black">Numero de Bien</th>
@@ -139,7 +105,6 @@
                 <tr>
                     <td><b><input name="sim[]" id="sim" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
                     <td><b><input name="marca[]" id="marca" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
-                    <td><b><input name="modelo[]" id="modelo" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
                     <td><b><input name="imeil[]" id="imeil" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
                     <td><b><input name="serial[]" id="serial" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
                     <td><b><input name="nroBien[]" id="nroBien" class="form-control validate-field" type="text" style="width: 150px; height: 40px; color:black"></b></td>
@@ -179,65 +144,7 @@ setTimeout(function() {
 
 
 @endsection
-<script>
-function buscarPersona(){
-
-var cedula = $('#buscadorCedula').val()
-var nombre = $('#buscadorNombre').val()
-var apellido = $('#buscadorApellido').val()
-$.ajax({
-  url : '/buscarPersona',
-  method : 'post',
-  data :{
-    "_token":"{{csrf_token()}}",
-    filtroCedula : cedula,
-    filtroNombre : nombre,
-    filtroApellido : apellido,
-  },
-  success : function(persona){
-    console.log(persona)
-    var html = "<div class='row'><table class='table table-striped'><tr> <th>Cedula</th> <th>Nombres</th>  <th>Apellidos </th><th>Acueducto</th> <th>Gerencia</th> <th>Cargo</th> <th>Agregar</th> </tr>"
-    for(i=0; i< persona.length; i++){
-      html+= "<tr class='fila2'><td id='cedper[i]'>"+persona[i]['cedper']
-            +"</td><td id='nomper'>"+persona[i]['nomper']
-            +"</td><td id='apeper'>"+persona[i]['apeper']
-            +"</td><td id='desuibfis'>"+persona[i]['desubifis']
-            +"</td><td id='desuniadm'>"+persona[i]['desuniadm']
-            +"</td><td id='denasicar'>"+persona[i]['denasicar']
-            +"</td><td> <a class='btn btn-success' onclick='agregarPersona("+persona[i]['cedper']
-            +")' ><i class='fas fa-user-plus'></i></i></a></td></tr>"
-    }
-    html+= "</table>"
-    $("#mostrarPersonas").css('display','')
-    $("#mostrarPersonas").html(html)
-  }
-})
-}
-
-function agregarPersona(ced){
-$.ajax({
-  url : '/buscarPersona',
-  method : 'post',
-  data :{
-    "_token":"{{csrf_token()}}",
-    filtroCedula : ced,
-    filtroNombre : '',
-    filtroApellido : '',
-  }, success : function(persona){
-    $("#cedula").val(persona[0]['cedper']).attr('readonly','true')
-    $("#primer_nombre").val(persona[0]['nomper']).attr('readonly','true')
-    $("#primer_apellido").val(persona[0]['apeper']).attr('readonly','true')
-    $("#acueducto").val(persona[0]['desubifis']).attr('readonly','true')
-    $("#departamento").val(persona[0]['desuniadm']).attr('readonly','true')
-    $("#cargo").val(persona[0]['denasicar']).attr('readonly','true')
-
-    $("#mostrarPersonas").css('display','none')
-  }
-})
-
-}
-
-
+<script> 
 function addDynamicField() {
     var dynamicFieldsDiv = document.getElementById('dynamic-fields');
     var templateField = document.getElementById('template-field');
@@ -267,7 +174,7 @@ function removeDynamicField(button) {
     $(".validate-field").each(function(i, input) {
       var fieldId = $(input).attr('id');
       i2= i
-      if(i>14){
+      if(i>13){
         if (fieldId === 'segunda_cedula'){ // Replace 'field1' with the ID of the first field
         if ($(input).val().trim() === ''){
           $(input).addClass('campo_con_errores');
@@ -342,15 +249,6 @@ function removeDynamicField(button) {
       }
   
       if (fieldId === 'marca'){ // Replace 'field1' with the ID of the first field
-        if ($(input).val().trim() === ''){
-          $(input).addClass('campo_con_errores');
-          errores++;
-        } else {
-          $(input).removeClass('campo_con_errores');
-        }
-      }
-
-      if (fieldId === 'modelo'){ // Replace 'field1' with the ID of the first field
         if ($(input).val().trim() === ''){
           $(input).addClass('campo_con_errores');
           errores++;
@@ -484,10 +382,10 @@ function removeDynamicField(button) {
       }
     });
     
-    if(errores<1 && i2>14 && errores2<1) {
+    if(errores<1 && i2>13 && errores2<1) {
       $("#form").submit();
       
-    } else if(i2<=14 && errores2<1){
+    } else if(i2<=13 && errores2<1){
       alert("Agregue una relacion para guardar")
     }else{
       alert("Verifique el tipo de dato y la longitud de los campos en rojo")

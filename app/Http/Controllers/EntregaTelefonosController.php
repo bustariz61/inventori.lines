@@ -10,8 +10,6 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Session;
 use App\Models\PersonaTelefono;
-use Maatwebsite\Excel\Facades\Excel;
-
 
 class EntregaTelefonosController extends Controller{
     public function mostrarEntregaTelefonos(){
@@ -32,50 +30,6 @@ class EntregaTelefonosController extends Controller{
           
     return view('Vistas.Retiros.entregaTelefonos', ['entrega'=> $entrega ]);
 
-    }
-
-    public function buscarPersona(){
-        DB::enableQueryLog();
-        $filtroCedula = $_POST['filtroCedula'];
-        $filtroNombre = strtoupper($_POST['filtroNombre']);
-        $filtroApellido = strtoupper($_POST['filtroApellido']);
-
-        $persona = DB::connection('pgsql2')
-                            ->table('sno_personal as p')->distinct(['p.cedper'])
-                            ->join('sno_personalnomina as pn','p.codper','pn.codper')
-                            ->join('sno_ubicacionfisica as uf','pn.codubifis','uf.codubifis')
-                            ->join('sno_asignacioncargo as ac', 'pn.codasicar','ac.codasicar')
-                            ->join('sno_unidadadmin as ua',function($join){
-                                $join->on('pn.ofiuniadm','=','ua.ofiuniadm')
-                                     ->on('pn.uniuniadm','=','ua.uniuniadm')
-                                     ->on('pn.depuniadm','=','ua.depuniadm')
-                                     ->on('pn.prouniadm','=','ua.prouniadm')
-                                     ->on('pn.minorguniadm','=','ua.minorguniadm');
-                            })
-                            //->join('sno_unidadadmin as ua','pn.ofiuniadm','ua.ofiuniadm')
-                            ->where('pn.codnom','8003');
-                            if($filtroCedula != ''){
-                                $persona = $persona->where('pn.codper','like','%'.$filtroCedula.'%');
-                            }
-                            if($filtroNombre != ''){
-                                $persona = $persona->where('p.nomper','like','%'.$filtroNombre.'%');
-                            }
-                            if($filtroApellido != ''){
-                                $persona = $persona->where('p.apeper','like','%'.$filtroApellido.'%');
-                            }
-                            $persona  = $persona->select('p.cedper',
-                                                         'p.nomper',
-                                                         'p.apeper',
-                                                         'uf.desubifis',
-                                                         'ac.denasicar',
-                                                         'ua.desuniadm',
-                                                         // 'ua.minorguniadm',
-                                                         // 'ua.ofiuniadm',
-                                                         // 'ua.uniuniadm',
-                                                         // 'ua.depuniadm',
-                                                         // 'ua.prouniadm',
-                                                        )->get();
-        return $persona;
     }
 
     public function registrarEntregaTelefono(){
@@ -201,22 +155,18 @@ class EntregaTelefonosController extends Controller{
         $desde = $request->desde;
         $hasta = $request->hasta;   
         $entrega = DB::table('persona_telefono as a')
-    ->join('retiros as c', 'c.id', '=', 'a.id_retiro')
+    ->join('retiros as b', 'b.id', '=', 'a.id_retiro')
     ->select('a.id', 'a.segunda_cedula', 'a.segundo_nombre', 'a.segundo_apellido',
      'a.fecha', 'a.segunda_ubicacion', 'a.segundo_cargo', 'a.segundo_acueducto',
-      'a.segundo_departamento', 'c.cedula', 'c.primer_nombre', 'c.primer_apellido',
-       'a.status', 'a.marca', 'a.color', 'a.serial', 'a.cargador', 'a.protector_pantalla',
-       'a.forro', 'a.activo', 'a.imei1', 'a.imei2',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'c.primer_nombre', 'c.primer_apellido')
+      'a.segundo_departamento', 'a.numero_linea', 'a.numero_sim',
+       'b.nombre as telefonia', 'a.status', 'b.cedula',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'c.primer_nombre', 'c.primer_apellido')
     ->where(function ($query) use ($filtro) {
         $query->where('a.segunda_cedula', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_nombre', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_apellido', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_departamento', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_cargo', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('a.segundo_acueducto', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.cedula', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.primer_nombre', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.primer_apellido', 'ILIKE', '%' . $filtro . '%');
+            ->orWhere('a.segundo_acueducto', 'ILIKE', '%' . $filtro . '%');
     })
     ->when($desde != null && $hasta != null, function ($query) use ($desde, $hasta) {
         $query->where('a.fecha', '>=', $desde)
@@ -231,10 +181,8 @@ class EntregaTelefonosController extends Controller{
         Session::flash('errorMessage', $errorMessage);
         return back();
         }else{
-        $fields = ['segunda_cedula', 'segundo_nombre', 'segunda_ubicacion', 'segundo_cargo', 'segundo_acueducto', 'segundo_departamento'];
-        $columnNames = ['Cedula', 'Nombre', 'Dirección de ubicación', 'Cargo', 'Acueducto', 'Departamento'];
-        $export = new EntregaLineasExcel($entrega, $fields, $columnNames);
-        return Excel::download($export, 'entregas_puntos_ventas.xlsx');
+        $export = new EntregaLineasExcel($entrega);
+        return view('Vistas.Retiros.entregaLineas', compact('entrega'));
         }
     }
 

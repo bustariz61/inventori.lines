@@ -1,10 +1,10 @@
 <VirtualHost *:80>
     ServerName   sigestel.hidrocapital.gob.ve.local
-    DocumentRoot "/var/www/html/InventorySystemxd/public/"
-    ErrorLog     "/var/www/html/InventorySystemxd/public/error.log"
-    CustomLog    "/var/www/html/InventorySystemxd/public/access.log" combined
+    DocumentRoot "/var/www/html/InventorySystem/public/"
+    ErrorLog     "/var/www/html/InventorySystem/public/error.log"
+    CustomLog    "/var/www/html/InventorySystem/public/access.log" combined
 
-    <Directory "/var/www/html/InventorySystemxd/public/">
+    <Directory "/var/www/html/InventorySystem/public/">
         Options +Indexes +FollowSymLinks
         DirectoryIndex index.php
         AllowOverride None

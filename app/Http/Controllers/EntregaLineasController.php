@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EntregaLineasExcel;
 use App\Models\PersonaLinea;
 use App\Models\Retiro;
 use App\Models\Telefonia;
@@ -9,8 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\EntregaLineasExcel;
 
 class EntregaLineasController extends Controller
 {
@@ -198,18 +197,14 @@ class EntregaLineasController extends Controller
     ->select('a.id', 'a.segunda_cedula', 'a.segundo_nombre', 'a.segundo_apellido',
      'a.fecha', 'a.segunda_ubicacion', 'a.segundo_cargo', 'a.segundo_acueducto',
       'a.segundo_departamento', 'a.numero_linea', 'a.numero_sim',
-       'b.nombre as telefonia', 'a.status', 'c.cedula', 'c.primer_nombre', 'primer_apellido',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'c.primer_nombre', 'c.primer_apellido')
+       'b.nombre as telefonia', 'a.status', 'c.cedula',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'c.primer_nombre', 'c.primer_apellido')
     ->where(function ($query) use ($filtro) {
         $query->where('a.segunda_cedula', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_nombre', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_apellido', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_departamento', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_cargo', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('a.segundo_acueducto', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.cedula', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.primer_nombre', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.primer_apellido', 'ILIKE', '%' . $filtro . '%');
-
+            ->orWhere('a.segundo_acueducto', 'ILIKE', '%' . $filtro . '%');
     })
     ->when($desde != null && $hasta != null, function ($query) use ($desde, $hasta) {
         $query->where('a.fecha', '>=', $desde)
@@ -223,21 +218,15 @@ class EntregaLineasController extends Controller
         $errorMessage = "No se ha encontrado nada";
         Session::flash('errorMessage', $errorMessage);
         return back();
-        }else if($filtro==null)
-        return ("ola");
-        else{
-        /*$fields = ['segunda_cedula', 'segundo_nombre', 'segunda_ubicacion', 'segundo_cargo', 'segundo_acueducto', 'segundo_departamento',
-    'numero_linea', 'numero_sim', 'telefonia'];
-        $columnNames = ['Cedula', 'Nombre', 'Dirección de ubicación', 'Cargo', 'Acueducto', 'Departamento', 'numero_linea',
-    'numero_sim', 'telefonia'];
-        $export = new EntregaLineasExcel($entrega, $fields, $columnNames);
-        return Excel::download($export, 'entrega_lineas.xlsx');*/
-        dd ($entrega);
+        }else{
+        $export = new EntregaLineasExcel($entrega);
+        return view('Vistas.Retiros.entregaLineas', compact('entrega'));
         }
     }
 
     public function generarExcel(){
-    }
+        //return Excel::download(new EntregaLineasExcel, 'filename.xlsx');
+}
 
 
    

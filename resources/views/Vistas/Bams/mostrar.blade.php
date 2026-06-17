@@ -2,7 +2,7 @@
 @section('content')
  <br>
  <br>
-<h1 class="text-white" align="center">Entrega Bams</h1>
+<h1 class="text-white" align="center">Detalle Retiro Telefono</h1>
 
 
 <div class="table-responsive">
@@ -14,20 +14,6 @@
         <br>  
       <thead class="thead-light">
         <a href="{{ route('registroEntregaBams.registrar') }}" class="btn btn-primary">Registrar Entrega Bams</a>
-        <form action="{{ route('filtrarEntregaBams.filtrar') }}" method="GET" id="form">
-          @if(Session::has('errorMessage'))
-          <div id="flash-message" class="alert alert-danger">
-              {{ Session::get('errorMessage') }}
-          </div>
-          @endif
-          <label for="min_age">Filtro:</label>
-          <input type="text" name="filtro" id="filtro ">
-          <label for="min_age">Fecha:</label>
-          <input type="date" name="desde" id="desde">
-          <input type="date" name="hasta" id="hasta">
-      
-          <button type="submit" class="btn">Aplicar filtro</button>
-        </form>
 
         <tr>
           <th scope="col">Cedula</th>
@@ -39,7 +25,6 @@
           <th scope="col">Departamento</th>
           <th scope="col">sim</th>
           <th scope="col">Marca</th>
-          <th scope="col">Modelo</th>
           <th scope="col">Imeil</th>
           <th scope="col">Serial</th>
           <th scope="col">nroBien</th>
@@ -63,7 +48,6 @@
             <td><b>{{$en->segundo_departamento}}</b></td>
             <td><b>{{$en->sim}}</b></td>
             <td><b>{{$en->marca}}</b></td>
-            <td><b>{{$en->modelo}}</b></td>
             <td><b>{{$en->imeil}}</b></td>
             <td><b>{{$en->serial}}</b></td>
             <td><b>{{$en->nroBien}}</b></td>

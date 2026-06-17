@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EntregaLineasExcel;
 use App\Models\PersonaLinea;
 use App\Models\PersonaBam;
 use App\Models\Retiro;
@@ -10,8 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\EntregaLineasExcel;
 
 class EntregaBamsController extends Controller
 {
@@ -29,7 +28,6 @@ class EntregaBamsController extends Controller
                   'a.segundo_departamento',
                   'a.sim',
                   'a.marca',
-                  'a.modelo',
                   'a.imeil',
                   'a.serial',
                   'a.nroBien',
@@ -116,7 +114,6 @@ class EntregaBamsController extends Controller
         $segundo_departamento = $request->input('segundo_departamento');
         $sim = $request->input('sim');
         $marca = $request->input('marca');
-        $modelo = $request->input('modelo');
         $imeil = $request->input('imeil');
         $serial = $request->input('serial');
         $nroBien = $request->input('nroBien');
@@ -138,7 +135,6 @@ class EntregaBamsController extends Controller
             $camposDinamicos->segundo_departamento = $segundo_departamento[$i];
             $camposDinamicos->sim = $sim[$i];
             $camposDinamicos->marca = $marca[$i];
-            $camposDinamicos->modelo = $modelo[$i];
             $camposDinamicos->imeil = $imeil[$i];
             $camposDinamicos->serial = $serial[$i];
             $camposDinamicos->nroBien = $nroBien[$i];
@@ -158,12 +154,13 @@ class EntregaBamsController extends Controller
     public function edit($id){
     $entrega = PersonaBam::find($id);
     return view('Vistas.Bams.editar', compact('entrega'));
+
      
     }
 
 
     public function update(Request $request, $id){
-    $entrega = PersonaBam::findOrFail($id);
+    $entrega = PersonaLinea::findOrFail($id);
     $entrega->segunda_cedula = $request->input('segunda_cedula');
     $entrega->segundo_nombre = $request->input('segundo_nombre');
     $entrega->segundo_apellido = $request->input('segundo_apellido');
@@ -173,13 +170,12 @@ class EntregaBamsController extends Controller
     $entrega->segundo_acueducto = $request->input('segundo_acueducto');
     $entrega->segundo_departamento = $request->input('segundo_departamento');
     $entrega->sim = $request->input('sim');
-    $entrega->marca = $request->input('marca');
-    $entrega->modelo = $request->input('modelo');
-    $entrega->imeil = $request->input('imeil');
-    $entrega->serial = $request->input('serial');
-    $entrega->nroBien = $request->input('nroBien');
-    $entrega->antena = $request->input('antena');
-    $entrega->fecha = $request->input('fecha');
+    $entrega->sim = $request->input('marca');
+    $entrega->sim = $request->input('imeil');
+    $entrega->sim = $request->input('serial');
+    $entrega->sim = $request->input('nroBien');
+    $entrega->sim = $request->input('antena');
+    $entrega->sim = $request->input('fecha');
     $entrega->save();
     
     $id_entrega = $entrega->id;
@@ -204,12 +200,11 @@ class EntregaBamsController extends Controller
         $desde = $request->desde;
         $hasta = $request->hasta;   
         $entrega = DB::table('persona_bam as a')
-    ->join('retiros as c', 'c.id', '=', 'a.id_retiro')
+    ->join('retiros as b', 'b.id', '=', 'a.id_retiro')
     ->select('a.id', 'a.segunda_cedula', 'a.segundo_nombre', 'a.segundo_apellido',
      'a.fecha', 'a.segunda_ubicacion', 'a.segundo_cargo', 'a.segundo_acueducto',
-      'a.segundo_departamento', 'a.status', 'c.cedula', 'c.primer_nombre', 
-      'c.primer_apellido', 'a.sim','a.marca', 'a.modelo', 'a.imeil','a.serial',
-      'a.nroBien','a.antena',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                'c.primer_nombre', 'c.primer_apellido')
+      'a.segundo_departamento', 'a.numero_linea', 'a.numero_sim', 'a.status', 'b.cedula',
+      'b.primer_nombre', 'primer_apellido',                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   'c.primer_nombre', 'c.primer_apellido')
     ->where(function ($query) use ($filtro) {
         $query->where('a.segunda_cedula', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_nombre', 'ILIKE', '%' . $filtro . '%')
@@ -217,9 +212,9 @@ class EntregaBamsController extends Controller
             ->orWhere('a.segundo_departamento', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_cargo', 'ILIKE', '%' . $filtro . '%')
             ->orWhere('a.segundo_acueducto', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.cedula', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.primer_nombre', 'ILIKE', '%' . $filtro . '%')
-            ->orWhere('c.primer_apellido', 'ILIKE', '%' . $filtro . '%');
+            ->orWhere('b.cedula', 'ILIKE', '%' . $filtro . '%')
+            ->orWhere('b.primer_nombre', 'ILIKE', '%' . $filtro . '%')
+            ->orWhere('b.primer_apellido', 'ILIKE', '%' . $filtro . '%');
             
     })
     ->when($desde != null && $hasta != null, function ($query) use ($desde, $hasta) {
@@ -235,12 +230,8 @@ class EntregaBamsController extends Controller
         Session::flash('errorMessage', $errorMessage);
         return back();
         }else{
-        $fields = ['segunda_cedula', 'segundo_nombre', 'segunda_ubicacion', 'segundo_cargo', 'segundo_acueducto', 'segundo_departamento',
-        'sim', 'marca', 'modelo', 'imeil', 'serial', 'nroBien', 'antena', 'fecha'];
-        $columnNames = ['Cedula', 'Nombre', 'Dirección de ubicación', 'Cargo', 'Acueducto', 'Departamento', 'Sim', 'Marca',
-        'Modelo', 'Imeil', 'Serial', 'Número Bien', 'Antena', 'Fecha'];
-        $export = new EntregaLineasExcel($entrega, $fields, $columnNames);
-        return Excel::download($export, 'entregaBams.xlsx');
+        $export = new EntregaLineasExcel($entrega);
+        return view('Vistas.Retiros.entregaLineas', compact('entrega'));
         }
     }
 
@@ -252,21 +243,21 @@ class EntregaBamsController extends Controller
    
     // funcion para imprimir pdf
     public function pdf($id){
-        $query = PersonaBam::find($id);
+        $query = PersonaLinea::find($id);
         $oldFormat = $query->created_at;
         $fecha = $oldFormat->format('d-m-Y');
         $dia = substr($fecha,0,2);
         $mes = substr($fecha,3,2); 
-        $entrega = db::table('persona_bam as a')
+        $entrega = db::table('persona_linea as a')
         ->join('retiros as b', 'b.id', '=', 'a.id_retiro')
         ->where('a.id', $id)
         ->select('a.segunda_cedula', 'a.segundo_nombre', 'a.segundo_apellido'
         , 'a.segunda_ubicacion', 'a.segundo_cargo',
-         'a.segundo_acueducto', 'a.segundo_departamento', 'a.sim', 'a.marca',
-          'a.modelo', 'a.imeil', 'a.serial', 'a.nroBien', 'a.antena', 'a.fecha')->get();
-        $pdf = Pdf::loadView('Vistas.Bams.pdf', ['entrega' =>$entrega], compact('dia', 'mes'));
+         'a.segundo_acueducto', 'a.segundo_departamento', 'a.numero_linea',
+          'a.numero_sim', 'a.status', 'b.cedula', 'b.cargo', 'b.ubicacion', 'a.telefonia')->get();
+        $pdf = Pdf::loadView('Vistas.Retiros.entregaLineaPdf', ['entrega' =>$entrega], compact('dia', 'mes'));
 
-        return $pdf->stream('pdf');
+        return $pdf->stream('entregaLineaPdf');
        
     }
 }

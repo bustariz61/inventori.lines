@@ -19,6 +19,7 @@
           <th scope="col" style="color: black">Cedula</th>
           <th scope="col" style="color: black">Nombre</th>
           <th scope="col" style="color: black">Apellido</th>
+          <th scope="col" style="color: black">Fecha</th>
           <th scope="col" style="color: black">Ubicacion</th>
           <th scope="col" style="color: black">Cargo</th>
           <th scope="col" style="color: black">Acueducto</th>
@@ -34,6 +35,7 @@
             <td><b><input name="segunda_cedula" id="segunda_cedula" value="{{ $entrega->segunda_cedula }}" class="form-control validate-field" type="text" style="width: 100px; height: 40px; color:black"></b></td>
             <td><b><input name="segundo_nombre" id="segundo_nombre" value="{{ $entrega->segundo_nombre }}" class="form-control validate-field" type="text" style="width: 120px; height: 40px; color:black"></b></td>
             <td><b><input name="segundo_apellido" id="segundo_apellido" value="{{ $entrega->segundo_apellido }}" class="form-control validate-field" type="text" style="width: 120px; height: 40px; color:black""></b></td>
+            <td><b><input name="fecha2" id="fecha" value="{{ $entrega->fecha }}" class="form-control validate-field" type="date" style="width: 120px; height: 40px; color:black"></b></td>
             <td><b><input name="segunda_ubicacion" id="segunda_ubicacion" value="{{ $entrega->segunda_ubicacion }}" class="form-control validate-field" type="text" style="width: 300px; height: 40px; color:black"></b></td>
             <td><b><input name="segundo_cargo" id="segundo_cargo" value="{{ $entrega->segundo_cargo }}" class="form-control validate-field" type="text" style="width: 200px; height: 40px; color:black"></b></td>
             <td><b><input name="segundo_acueducto" id="segundo_acueducto" value="{{ $entrega->segundo_acueducto }}" class="form-control validate-field" type="text" style="width: 200px; height: 40px; color:black"></b></td>
@@ -44,12 +46,10 @@
           <th scope="col" style="color: black">Numero Linea</th>
           <th scope="col" style="color: black">Numero sim</th>
           <th scope="col" style="color: black">Telefonia</th>
-          <th scope="col" style="color: black">Fecha</th>
         </tr>
         <td><b><input name="numero_linea" id="numero_linea" value="{{ $entrega->numero_linea }}" class="form-control validate-field" type="text" style="width: 120px; height: 40px; color:black"></b></td>
         <td><b><input name="numero_sim" id="numero_sim" value="{{ $entrega->numero_sim }}" class="form-control validate-field" type="text" style="width: 120px; height: 40px; color:black"></b></td>
         <td><b>{{ Form::select('telefonia', $telefonia, $nombreTelefonia, ['class' => 'form-control validate', 'style' => 'color: black;']) }}</b></td>
-        <td><b><input name="fecha2" id="fecha" value="{{ $entrega->fecha }}" class="form-control validate-field" type="date" style="width: 120px; height: 40px; color:black"></b></td>
         <tr>
 
         </tr>

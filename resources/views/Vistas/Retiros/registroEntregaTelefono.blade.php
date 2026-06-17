@@ -18,38 +18,7 @@
       
       <br>
       <h2>Datos del gerente</h2>
-      <a href="{{ route('dashboard.mostrarDashboard') }}" class="btn btn-primary">Regresar</a>
-      <br>
-
-      <div class="row">
-        <div class="col-3">
-          <input  class="form-control original"
-                  type="text" id="buscadorCedula"
-                  placeholder="Cédula">
-        </div>
-
-        <div class="col-3">
-          <input  class="form-control original"
-                  type="text" id="buscadorNombre"
-                  placeholder="Nombre">
-        </div>
-
-        <div class="col-3">
-          <input  class="form-control original"
-                  type="text" id="buscadorApellido"
-                  placeholder="Apellido"
-          >
-        </div>
-        <div class="col-2">
-          <button type="button" class="btn btn-success" onclick="buscarPersona()"><i class="fas fa-search"></i> Buscar</button>
-        </div>
-      </div>
-      <br><br>
-      <div id="mostrarPersonas"></div>
-
-
-
-        <br><br>
+      <a href="{{ route('entregaTelefonos.mostrarEntregaTelefonos') }}" class="btn btn-primary">Regresar</a>
     
         <tr>
           <th scope="colr" style="color: black">Datos Persona</th>
@@ -88,6 +57,7 @@
     
 <br>
       <h2>Asignado a</h2>
+      <button type="button" class="btn btn-primary" onclick="addDynamicField()">Asignar Telefono</button>
 
       <div id="dynamic-fields">
         <!-- Template field for cloning -->
@@ -161,8 +131,6 @@
     </div>
     <br>
     <button type="button" class="btn btn-primary" onclick="validarInput()">Guardar</button>
-    <button type="button" class="btn btn-primary" onclick="addDynamicField()">Asignar Telefono</button>
-
 
   </form>
   </div>
@@ -182,65 +150,7 @@ setTimeout(function() {
 
 
 @endsection
-<script>
-function buscarPersona(){
-
-var cedula = $('#buscadorCedula').val()
-var nombre = $('#buscadorNombre').val()
-var apellido = $('#buscadorApellido').val()
-$.ajax({
-  url : '/buscarPersona',
-  method : 'post',
-  data :{
-    "_token":"{{csrf_token()}}",
-    filtroCedula : cedula,
-    filtroNombre : nombre,
-    filtroApellido : apellido,
-  },
-  success : function(persona){
-    console.log(persona)
-    var html = "<div class='row'><table class='table table-striped'><tr> <th>Cedula</th> <th>Nombres</th>  <th>Apellidos </th><th>Acueducto</th> <th>Gerencia</th> <th>Cargo</th> <th>Agregar</th> </tr>"
-    for(i=0; i< persona.length; i++){
-      html+= "<tr class='fila2'><td id='cedper[i]'>"+persona[i]['cedper']
-            +"</td><td id='nomper'>"+persona[i]['nomper']
-            +"</td><td id='apeper'>"+persona[i]['apeper']
-            +"</td><td id='desuibfis'>"+persona[i]['desubifis']
-            +"</td><td id='desuniadm'>"+persona[i]['desuniadm']
-            +"</td><td id='denasicar'>"+persona[i]['denasicar']
-            +"</td><td> <a class='btn btn-success' onclick='agregarPersona("+persona[i]['cedper']
-            +")' ><i class='fas fa-user-plus'></i></i></a></td></tr>"
-    }
-    html+= "</table>"
-    $("#mostrarPersonas").css('display','')
-    $("#mostrarPersonas").html(html)
-  }
-})
-}
-
-function agregarPersona(ced){
-$.ajax({
-  url : '/buscarPersona',
-  method : 'post',
-  data :{
-    "_token":"{{csrf_token()}}",
-    filtroCedula : ced,
-    filtroNombre : '',
-    filtroApellido : '',
-  }, success : function(persona){
-    $("#cedula").val(persona[0]['cedper']).attr('readonly','true')
-    $("#primer_nombre").val(persona[0]['nomper']).attr('readonly','true')
-    $("#primer_apellido").val(persona[0]['apeper']).attr('readonly','true')
-    $("#acueducto").val(persona[0]['desubifis']).attr('readonly','true')
-    $("#departamento").val(persona[0]['desuniadm']).attr('readonly','true')
-    $("#cargo").val(persona[0]['denasicar']).attr('readonly','true')
-
-    $("#mostrarPersonas").css('display','none')
-  }
-})
-
-}
-
-
+<script> 
 function addDynamicField() {
     var dynamicFieldsDiv = document.getElementById('dynamic-fields');
     var templateField = document.getElementById('template-field');

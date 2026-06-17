@@ -10,7 +10,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PersonasController;
 use App\Http\Controllers\RetirosController;
 use App\Http\Controllers\EntregaLineasController;
-use App\Http\Controllers\EntregaPuntosVentasController;
 use App\Http\Controllers\EntregaTelefonosController;
 
 /*
@@ -35,7 +34,6 @@ Route::controller(LoginController::class)->group(function(){
     Route::post('register', 'registrar')->name('register.registrar');
     Route::get('register', 'vistaRegistro')->name('register.vistaRegistro');
     Route::get('password', 'contraseñaOlvidada')->name('password.contraseñaOlvidada');
-    Route::get('dashboard', 'mostrarDashboard')->name('dashboard.mostrarDashboard');
 
 });
 
@@ -85,7 +83,7 @@ Route::controller(EntregaLineasController::class)->group(function(){
     Route::get('editarEntregaLinea/{id}', 'edit')->name('editarEntregaLinea.edit');
     Route::post('editarEntregaLinea/{id}', 'update')->name('editarEntregaLinea.update');
 
-    Route::get('filtrarEntregaLineas', 'filtrar')->name('filtrarEntregaLineas.filtrar');
+    Route::get('filtrar', 'filtrar')->name('filtrar.filtrar');
     
     Route::get('entregaLineaPdf/{id}', 'mostrarPdf')->name('entregaLineaPdf.mostrarPdf');
 
@@ -108,7 +106,7 @@ Route::controller(EntregaTelefonosController::class)->group(function(){
     Route::get('editarEntregaTelefono{id}', 'edit')->name('editarEntregaTelefono.edit');
     Route::post('editarEntregaTelefono/{id}', 'update')->name('editarEntregaTelefono.update');
 
-    Route::get('filtrarEntregaTelefonos', 'filtrar')->name('filtrarEntregaTelefonos.filtrar');
+    Route::get('filtrar', 'filtrar')->name('filtrar.filtrar');
 
     Route::get('entregaTelefonoPdf/{id}', 'mostrarPdf')->name('entregaTelefonoPdf.mostrarPdf');
 
@@ -129,33 +127,13 @@ Route::controller(EntregaBamsController::class)->group(function(){
     Route::get('editarEntregaBam{id}', 'edit')->name('editarEntregaBam.edit');
     Route::post('editarEntregaBam/{id}', 'update')->name('editarEntregaBam.update');
 
-    Route::get('filtrarEntregaBams', 'filtrar')->name('filtrarEntregaBams.filtrar');
+    Route::get('filtrar', 'filtrar')->name('filtrar.filtrar');
 
     Route::get('entregaBamPdf/{id}', 'pdf')->name('entregaBamPdf.pdf');
 
 
 });
 
-//Retiros Puntos de Ventas
-Route::controller(EntregaPuntosVentasController::class)->group(function(){
-    Route::get('entregaPuntosVentas', 'mostrar')->name('entregaPuntosVentas.mostrar');
-
-    Route::get('registroEntregaPuntosVentas', 'registrar')->name('registroEntregaPuntosVentas.registrar');
-    Route::post('registroEntregaPuntosVentas', 'guardar')->name('registroEntregaPuntosVentas.guardar');
-
-
-   // Route::get('eliminarDetalleTelefono/{id}', 'eliminarDetalleTelefono')->name('eliminarDetalleTelefono.eliminarDetalleTelefono');
-
-
-    Route::get('editarEntregaPuntoVenta{id}', 'edit')->name('editarEntregaPuntoVenta.edit');
-    Route::post('editarEntregaPuntoVenta/{id}', 'update')->name('editarEntregaPuntoVenta.update');
-
-    Route::get('filtrarEntregaPuntosVentas', 'filtrar')->name('filtrarEntregaPuntosVentas.filtrar');
-
-    Route::get('entregaPuntoVentaPdf/{id}', 'pdf')->name('entregaPuntoVentaPdf.pdf');
-
-
-});
 
 //Comunicacion Interna
 Route::controller(ComunicacionInternaController::class)->group(function(){

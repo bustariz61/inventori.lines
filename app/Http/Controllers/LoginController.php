@@ -34,10 +34,6 @@ class LoginController extends Controller
         return view('Vistas.registro');
     }
 
-    public function mostrarDashboard(){
-        return view('Vistas.dashboard');
-    }
-
 
     public function registrar(Request $request){
         $registro = new Usuario();
